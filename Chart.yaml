@@ -1,0 +1,7 @@
+apiVersion: v2
+name: cosmocloud-deploy
+description: A Helm chart for deploying a complete application stack with frontend, backend, and Redis
+version: 0.1.0
+maintainers:
+  - name: Samarth Gupta
+type: application
