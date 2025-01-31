@@ -1,62 +1,64 @@
-# Cosmocloud Deploy Helm Chart
+# 🚀 HelmStack: Kubernetes & Helm Deployment
 
-This Helm chart deploys a complete application stack consisting of a frontend, backend, and Redis database.
+## 🌟 Overview
+Welcome to **HelmStack** – a streamlined Kubernetes deployment solution using Helm! This project is designed to help deploy a full application stack, including backend, frontend, and Redis, efficiently using Helm Charts.
 
-Author: Samarth Gupta
+## 🔥 Features
+✅ Deploys **Backend, Frontend, and Redis** as Kubernetes Deployments.  
+✅ Uses **Helm Charts** for easy deployment and version management.  
+✅ Exposes services using **ClusterIP & NodePort**.  
+✅ Defines **ConfigMaps** to pass environment variables.  
+✅ Scalable and customizable with Helm `values.yaml`.  
+✅ Secure deployment with internal communications restricted to ClusterIP.  
+✅ Deployable with a **single Helm command**.  
 
-## Components
+## 📌 Deployment Details
+### **Backend Service**
+- Image: `shreybatra/sample-backend`
+- Service Name: `backend-svc`
+- Type: ClusterIP
+- Port: `8000`
+- Env Variable: `REDIS_URI=redis://redis-svc:6379`
 
-1. **Frontend**
-   - Image: `shreybatra/sample-frontend`
-   - Exposed via LoadBalancer service on port 5175
-   - Connects to backend service
-   - Environment Variables:
-     - BACKEND_URL: Points to backend service
+### **Frontend Service**
+- Image: `shreybatra/sample-frontend`
+- Service Name: `frontend-svc`
+- Type: NodePort
+- Port: `5175`
+- NodePort: `31000`
+- Env Variable: `BACKEND_URL=http://backend-svc:8000`
 
-2. **Backend**
-   - Image: `shreybatra/sample-backend`
-   - Internal ClusterIP service on port 8000
-   - Connects to Redis service
-   - Environment Variables:
-     - REDIS_URI: Points to Redis service
+### **Redis Service**
+- Image: `redis`
+- Service Name: `redis-svc`
+- Type: ClusterIP
+- Port: `6379`
 
-3. **Redis**
-   - Image: `redis`
-   - Internal ClusterIP service on port 6379
-   - Used as database
-
-## Architecture Overview
-```
+## 🏗 Architecture Overview
 [Frontend (LoadBalancer:5175)] → [Backend (ClusterIP:8000)] → [Redis (ClusterIP:6379)]
+
+## 🎯 Installation & Setup
+```sh
+# Clone the Repository
+git clone https://github.com/guptasamarth200/helmstack.git
+cd helmstack
+```
+# Install Helm (if not installed)
+```
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 |bash
+```
+# Deploy the Application
+```
+helm install my-release.
 ```
 
-## Prerequisites
+# Verify the Deployment
+```kubectl get pods```
+```kubectl get services```
+✅ Verification Steps
+# Check if all pods are running
+```kubectl get pods```
 
-- Kubernetes cluster (1.16+)
-- Helm 3.x installed
-- kubectl configured to communicate with your cluster
-
-## Installation
-
-```bash
-# Clone the repository
-git clone <repository-url>
-cd cosmocloud-deploy
-
-# Install the chart
-helm install my-release .
-
-# Verify the deployment
-kubectl get pods
-kubectl get services
-```
-
-## Verification Steps
-
-1. Check if all pods are running:
-```bash
-kubectl get pods
-```
 Expected output:
 ```
 NAME                        READY   STATUS    RESTARTS   AGE
@@ -107,17 +109,18 @@ The following table lists the configurable parameters in `values.yaml`:
 | `redis.image.tag` | Redis image tag | `latest` |
 | `redis.service.port` | Redis service port | `6379` |
 
-## Security Considerations
+🔐 Security Considerations
 
-- All internal communications use ClusterIP services
-- Frontend is exposed via LoadBalancer for internet access
-- Backend and Redis remain internal
-- Each component runs with minimum required privileges
-- Environment variables are used for service discovery
+All internal communications use ClusterIP services.
+Frontend is exposed via LoadBalancer for internet access.
+Backend and Redis remain internal.
+Each component runs with minimum required privileges.
+Environment variables are used for service discovery.
 
-## Scaling
 
-The application can be scaled by adjusting the replica count in `values.yaml`:
+📈 Scaling
+
+The application can be scaled by adjusting the replica count in values.yaml:
 ```yaml
 frontend:
   replicas: 1  # Adjust as needed
@@ -126,3 +129,4 @@ backend:
 redis:
   replicas: 1  # Adjust as needed
 ```
+Built with ❤️ for scalable and efficient Kubernetes deployments. 🚀
